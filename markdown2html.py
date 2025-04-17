@@ -5,8 +5,9 @@ Module that converts a markdown file to HTML
 
 import sys
 import os
-import re 
+import re
 import hashlib
+
 
 def main():
     """
@@ -18,10 +19,10 @@ def main():
     if len(sys.argv) < 3:
         print(f"Usage: {sys.argv[0]} README.md README.html", file=sys.stderr)
         sys.exit(1)
-        
+
     md_file = sys.argv[1]
     output_filename = sys.argv[2]
-    
+
     if not os.path.exists(md_file):
         print(f"Missing {md_file}", file=sys.stderr)
         sys.exit(1)
@@ -61,7 +62,7 @@ def main():
         text = re.sub(r'__(.+?)__', r'<em>\1</em>', text)
 
         return text
-    
+
     # Flushing helpers
     def flush_paragraph():
         """Flush p_buf as a <p>…</p> block into html_lines."""
@@ -90,7 +91,7 @@ def main():
         if in_ol:
             html_lines.append('</ol>')
             in_ol = False
- 
+
     # Main loop
     for line in lines:
         # 1) Heading?
@@ -146,12 +147,13 @@ def main():
 
     flush_paragraph()
     close_lists()
-    
+
     with open(output_filename, 'w') as f:
         f.write('\n'.join(html_lines))
 
     # If all checks pass
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
